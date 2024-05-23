@@ -1,4 +1,4 @@
-name: Test ubicloud-standard-2-ubuntu-2204
+name: Test ubuntu-2204
 
 on:
   workflow_dispatch:
@@ -8,11 +8,24 @@ jobs:
     runs-on: ubicloud-standard-2-ubuntu-2204
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Check kernel version
+        run: uname -mr
 
-      - name: printenv
-        run: |
-          printenv
+      - name: Check OS version
+        run: lsb_release -a
+
+      - name: Print environment variables
+        run: printenv
+
+      - name: Print PATH
+        run: echo $PATH
+
+      - name: Try to update apt-get
+        run: sudo apt-get update
+
+      - name: Check filesystem
+        continue-on-error: true
+        run: sudo fsck -nf

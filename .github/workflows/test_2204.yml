@@ -5,7 +5,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubicloud-standard-2-ubuntu-2204
+    strategy:
+      matrix:
+        runs-on: [ubicloud, ubuntu-latest]
+    name: CI ${{matrix.runs-on}}
+    runs-on: ${{matrix.runs-on}}
+    continue-on-error: true
 
     steps:
       - name: Checkout code

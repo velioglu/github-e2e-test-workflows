@@ -29,3 +29,8 @@ jobs:
         uses: ./.github/workflows/test_ruby.yml
         with:
           runner_type: ${{ inputs.runner_type }}
+
+      - name: Run Restore/Save Cache tests
+        uses: ./.github/workflows/test_restore_save_cache.yml
+        with:
+          runner_type: ${{ inputs.runner_type }}

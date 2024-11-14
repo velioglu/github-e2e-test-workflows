@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    name: ${{ inputs.image_os }} ${{ inputs.arch }} cache
+    name: ${{ inputs.image_os }} ${{ inputs.arch }} restore cache
     runs-on: ${{ inputs.runner }}
     steps:
       - name: Checkout code

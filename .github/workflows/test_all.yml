@@ -21,8 +21,16 @@ jobs:
       image_os: ${{ inputs.image_os }}
       arch: ${{ inputs.arch }}
 
-  test_cache:
-    uses: ./.github/workflows/test_cache.yml
+  test_save_cache:
+    uses: ./.github/workflows/test_save_cache.yml
+    with:
+      runner: ${{ inputs.runner }}
+      image_os: ${{ inputs.image_os }}
+      arch: ${{ inputs.arch }}
+
+  test_restore_cache:
+    needs: test_save_cache
+    uses: ./.github/workflows/test_restore_cache.yml
     with:
       runner: ${{ inputs.runner }}
       image_os: ${{ inputs.image_os }}

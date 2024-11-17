@@ -64,6 +64,12 @@ jobs:
           echo "Cache didn't hit for setup-ruby"
           exit 1
 
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build the rust dependencies with cache
+        run: cargo build
+
       - name: Restore folders and files
         id: restore-file
         uses: actions/cache/restore@v4

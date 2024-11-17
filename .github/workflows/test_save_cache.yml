@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup python with cache
+      - name: Setup python without cache
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
@@ -32,16 +32,23 @@ jobs:
 
       - run: pip install -r python/requirements.txt
 
-      - uses: actions/setup-go@v5
+      - name: Setup Go without cache
+        uses: actions/setup-go@v5
         with:
           go-version: '1.22'
           cache-dependency-path: go/go.sum
 
-      - name: Set up Ruby
+      - name: Set up Ruby without cache
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2.6'
           bundler-cache: true
+
+      - name: Can't cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build the rust dependencies without cache
+        run: cargo build
 
       - name: Generate folders and files to cache
         run: |

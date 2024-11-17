@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup python without cache
+      - name: Setup python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
@@ -32,13 +32,13 @@ jobs:
 
       - run: pip install -r python/requirements.txt
 
-      - name: Setup Go without cache
+      - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
           cache-dependency-path: go/go.sum
 
-      - name: Set up Ruby without cache
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2.6'

@@ -15,9 +15,6 @@ on:
 
 jobs:
   test:
-    env:
-      BUNDLE_GEMFILE: ./ruby/Gemfile
-
     name: ${{ inputs.image_os }} ${{ inputs.arch }} save cache
     runs-on: ${{ inputs.runner }}
     steps:
@@ -40,6 +37,8 @@ jobs:
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: ./ruby/Gemfile
         with:
           ruby-version: '3.2.6'
           bundler-cache: true

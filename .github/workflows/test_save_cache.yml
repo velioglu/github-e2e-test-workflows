@@ -1,4 +1,4 @@
-name: Test cache functionalities
+name: Test save cache functionalities
 
 on:
   workflow_call:

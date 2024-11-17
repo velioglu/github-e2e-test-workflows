@@ -44,11 +44,12 @@ jobs:
           ruby-version: '3.2.6'
           bundler-cache: true
 
-      - name: Can't cache Rust dependencies
+      - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
 
-      - name: Build the rust dependencies without cache
+      - name: Build Rust project
         run: cargo build
+        working-directory: ./rust
 
       - name: Generate folders and files to cache
         run: |

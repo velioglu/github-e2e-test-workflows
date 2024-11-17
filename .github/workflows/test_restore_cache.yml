@@ -65,10 +65,7 @@ jobs:
           exit 1
 
       - name: Cache Rust dependencies
-        uses: Swatinem/rust-cache@v2
-
-      - name: Build the rust dependencies with cache
-        run: cargo build
+        uses: Swatinem/rust-cache@v2  
 
       - name: Restore folders and files
         id: restore-file

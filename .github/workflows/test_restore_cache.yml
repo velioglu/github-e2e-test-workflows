@@ -92,7 +92,10 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./docker
+          push: false
+          tags: my-docker-image:latest
           cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Error if cache doesn't hit for build-docker
         if: steps.build-docker.outputs.cache-hit == 'false'

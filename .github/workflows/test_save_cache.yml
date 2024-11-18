@@ -70,4 +70,6 @@ jobs:
         with:
           context: ./docker
           push: false
+          tags: my-docker-image:latest
+          cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -64,3 +64,10 @@ jobs:
             myfolder
             myfolder2
           key: cached_folders
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker
+          push: false
+          cache-to: type=gha,mode=max

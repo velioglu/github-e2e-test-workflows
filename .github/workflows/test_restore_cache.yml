@@ -86,3 +86,16 @@ jobs:
         run: |
           echo "Cache didn't hit for restore-cache"
           exit 1
+
+      - name: Build Docker image
+        id: build-docker
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker
+          cache-from: type=gha
+
+      - name: Error if cache doesn't hit for build-docker
+        if: steps.build-docker.outputs.cache-hit == 'false'
+        run: |
+          echo "Cache didn't hit for build-docker"
+          exit 1

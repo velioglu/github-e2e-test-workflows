@@ -82,7 +82,42 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Stress test Docker registry connections
+        run: |
+          echo "Starting Docker registry stress test..."
+
+          # Test 1: Multiple parallel image pulls
+          echo "Test 1: Parallel image pulls"
+          docker pull alpine:latest &
+          docker pull ubuntu:latest &
+          docker pull debian:latest &
+          docker pull centos:latest &
+          wait
+
+          # Test 2: Sequential pulls with different tags
+          echo "Test 2: Sequential pulls with different tags"
+          for tag in latest 3.18 3.17 3.16; do
+            echo "Pulling alpine:$tag"
+            docker pull "alpine:$tag"
+          done
+
+          # Test 3: Pull and remove cycle
+          echo "Test 3: Pull and remove cycle"
+          for i in {1..5}; do
+            echo "Cycle $i: Pulling and removing alpine:latest"
+            docker pull alpine:latest
+            docker rmi alpine:latest
+          done
+
+          # Test 4: Multiple registry operations
+          echo "Test 4: Multiple registry operations"
+          docker pull alpine:latest
+          docker tag alpine:latest alpine:stress-test
+          docker rmi alpine:stress-test
+
+          echo "Docker registry stress test completed"
+
+      - name: Build Docker image with retry
         uses: docker/build-push-action@v4
         with:
           context: ./docker
@@ -91,4 +126,16 @@ jobs:
 
       - name: Print cache proxy log
         run: sudo cat /var/log/cacheproxy.log
+        if: always()
+
+      - name: Print Docker daemon logs
+        run: |
+          echo "=== Docker daemon logs ==="
+          sudo journalctl -u docker.service --since "10 minutes ago" | tail -50
+        if: always()
+
+      - name: Print network diagnostics
+        run: |
+          echo "=== Network diagnostics ==="
+          curl -I --connect-timeout 10 https://registry-1.docker.io/v2/
         if: always()

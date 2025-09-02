@@ -79,6 +79,35 @@ jobs:
       #       myfolder2
       #     key: cached_folders_${{ env.CACHE_VERSION }}
 
+      
+
+
+      - name: Print PHP / Redis / Laravel versions
+        run: |
+          echo "PHP version:"
+          php -v
+          echo
+      
+          echo "Redis extension info:"
+          php --ri redis || echo "redis extension not installed"
+          echo
+      
+          echo "Predis installed?"
+          composer show predis/predis || echo "Predis not in composer.lock"
+          echo
+      
+          echo "Laravel version:"
+          php artisan --version || echo "artisan not available"
+          echo
+      
+          echo "Configured Redis client in Laravel:"
+          php -r 'echo "redis.client=", config("database.redis.client") ?? "(unknown)", PHP_EOL;' || true
+    
+
+
+
+      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

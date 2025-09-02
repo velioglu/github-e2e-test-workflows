@@ -1,0 +1,39 @@
+name: Runtime Info
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-runtime:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_mysql, xml, gd, json, tokenizer, bcmath, curl, imap, zip, ldap, memcached, imagick
+
+      - name: Print PHP / Redis / Laravel versions
+        run: |
+          echo "PHP version:"
+          php -v
+          echo
+
+          echo "Redis extension info:"
+          php --ri redis || echo "redis extension not installed"
+          echo
+
+          echo "Predis installed?"
+          composer show predis/predis || echo "Predis not in composer.lock"
+          echo
+
+          echo "Laravel version:"
+          php artisan --version || echo "artisan not available"
+          echo
+
+          echo "Configured Redis client in Laravel:"
+          php -r 'echo "redis.client=", config("database.redis.client") ?? "(unknown)", PHP_EOL;' || true
